@@ -1,3 +1,4 @@
+
 const host = import.meta.env.VITE_APP_SNAPSERVER_HOST || window.location.host;
 
 const keys = {
@@ -38,7 +39,7 @@ const config = {
     setPersistentValue(keys.snapserver_host, value);
   },
   get theme() {
-    return getPersistentValue(keys.theme, Theme.System.toString()) as Theme;
+    return getPersistentValue(keys.theme, Theme.Dark.toString()) as Theme;
   },
   set theme(value: Theme) {
     setPersistentValue(keys.theme, value);
