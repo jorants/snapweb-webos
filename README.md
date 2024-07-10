@@ -24,7 +24,6 @@ make install
 to install the app.
 
 
-
 ## Changes 
 
 The current and planned changes from the original app:
@@ -32,3 +31,9 @@ The current and planned changes from the original app:
 - [X] Removed unneeded files for mobile apps and debian
 - [X] Change README.md
 - [X] Basic WebApp setup
+- [X] Change Vite build process to work with webos (no module support)
+- [X] Dark mode default
+- [ ] Scale UI
+- [ ] Remote support
+- [ ] Scanning for server
+- [ ] Black screen mode (if possible)
