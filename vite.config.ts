@@ -1,41 +1,40 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { VitePWA } from 'vite-plugin-pwa';
+import legacy from '@vitejs/plugin-legacy'
+
+// From https://forum.webostv.developer.lge.com/t/failed-to-load-module-script-error-on-webos-5-lg-tvs/2351 
+const legacyScriptsPlugin = () => {
+  return {
+    name: "html-transform",
+    apply: "build",
+    transformIndexHtml: {
+      order: "post",
+      sequential: true,
+      handler(html: string) {
+        console.log("Removing module scripts to always fallback legacy build");
+
+        return html
+          .replace(
+            /<script type="module"(.*?)<\/script>/g,
+            "<!--  removed module -->"
+          )
+          .replace(
+            /<link rel="modulepreload"(.*?)>/g,
+            "<!--  removed modulepreload -->"
+          )
+          .replace(/<script nomodule/g, "<script");
+      },
+    },
+  };
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
   plugins: [react(),
-  VitePWA({
-    registerType: 'autoUpdate',
-    includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
-    manifest: {
-      name: 'Snapweb - Snapcast web client',
-      short_name: 'Snapweb',
-      theme_color: '#ffffff',
-      "icons": [
-        {
-          "src": "pwa-64x64.png",
-          "sizes": "64x64",
-          "type": "image/png"
-        },
-        {
-          "src": "pwa-192x192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        },
-        {
-          "src": "pwa-512x512.png",
-          "sizes": "512x512",
-          "type": "image/png"
-        },
-        {
-          "src": "maskable-icon-512x512.png",
-          "sizes": "512x512",
-          "type": "image/png",
-          "purpose": "maskable"
-        }
-      ],
-    },
-  })],
+   legacy({
+      targets: ['chrome 79'],
+    }),
+  legacyScriptsPlugin()  
+  ],
 })

@@ -1,10 +1,13 @@
-all: build
+all: build package
 
 build:
 	npm run build
 
+package:
+	ares-package -n dist
+
+install: 
+	ares-install *.ipk
+
 clean:
 	rm -rf dist
-
-install:
-	cd dist && find . -type f -exec install -Dm 644 "{}" "$(DESTDIR)/usr/share/snapweb/{}" \;
